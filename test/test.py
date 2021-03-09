@@ -1,6 +1,7 @@
+import sys
+sys.path[0]=sys.path[0][:sys.path[0].find('/',len(sys.path[0])-6)]
 import unittest
-from routes.routes import app
-
+from src.routes.routes import app
 
 class TestHome(unittest.TestCase):
 

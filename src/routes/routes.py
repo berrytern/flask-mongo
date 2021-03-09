@@ -1,20 +1,15 @@
-from decouple import config
 from flask import Flask
 from flask import request
-from routes.login import login
-from routes.csv import csv
-from pymongo import MongoClient
-#c = MongoClient()
-#print(c.test_database)
-client = MongoClient(config('Mongo_Path'))
-db=client.Loja
-db.product.insert_one({})
-
+from src.routes.user import login,register
+from src.routes.csv import csv
+from src.config.db import db
+#print(db.list_collection_names())
+#db.insert_one({"algo":'teste'})
 app=Flask(__name__)
 
-@app.route('/login',methods=['GET'])
+@app.route('/login',methods=['GET','POST'])
 def i_login():
-    return login(request)
-@app.route('/csv',methods=['GET','POST'])
-def csv():
-    return csv()
+    return login(request,db.users)
+@app.route('/register',methods=['GET','POST'])
+def i_register():
+    return register(request,db.users)
