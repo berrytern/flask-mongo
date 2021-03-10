@@ -1,5 +1,8 @@
 # Docker comands to run properly
 
+## Docker Compose
+sudo docker-compose up --build -d
+
 ## Mongodb container
 sudo docker pull mongo:4.0.4<br/>
 sudo docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:4.0.4
