@@ -5,6 +5,7 @@ from src.routes.csv import csv
 from src.config.db import db
 #print(db.list_collection_names())
 #db.insert_one({"algo":'teste'})
+print("algo")
 app=Flask(__name__)
 
 @app.route('/login',methods=['GET','POST'])
