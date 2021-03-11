@@ -10,7 +10,7 @@ def get_domain(link):
         
     def post(self):#login
         args=User.parser.parse_args()
-class Csv(request,db):
+class Csv(Resource):
     parser=reqparse.RequestParser()
     parser.add_argument('link',required=True)
     parser.add_argument('name',required=True)
@@ -19,7 +19,7 @@ class Csv(request,db):
     def post(self):#login
         args=User.parser.parse_args()
         #https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv
-        link,token, name = request.json['link'],request.json['token'], request.json['name']
+        link,token, name = args['link'],args['token'], args['name']
         db.get_domain(link)
         pd.read_csv()
         return request.json,200

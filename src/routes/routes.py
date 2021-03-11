@@ -2,7 +2,7 @@ from decouple import config
 from flask import Flask
 from flask_restful import Api
 from src.routes.user import User, Register
-from src.routes.csv import csv
+from src.routes.csv import Csv
 from flask_jwt_extended import JWTManager
 
 app=Flask(__name__)
