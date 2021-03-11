@@ -1,7 +1,25 @@
-from src.config.auth import encode, decode
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource,reqparse
+import pandas as pd
 
-def csv(request):
-    if(request.method == 'GET'):
-        print('get')#https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv
-        token=encode({'method':'GET'})
-        return {'encode':token,'decode':decode(token)}
+def get_domain(link):
+    domain=link[:link.find('/',link.find('.'))]
+    if(domain.find('.')!=-1):
+        domain=domain[domain.find('/')+2:]
+    return domain
+        
+    def post(self):#login
+        args=User.parser.parse_args()
+class Csv(request,db):
+    parser=reqparse.RequestParser()
+    parser.add_argument('link',required=True)
+    parser.add_argument('name',required=True)
+    
+    @jwt_required    
+    def post(self):#login
+        args=User.parser.parse_args()
+        #https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv
+        link,token, name = request.json['link'],request.json['token'], request.json['name']
+        db.get_domain(link)
+        pd.read_csv()
+        return request.json,200

@@ -6,7 +6,7 @@ def key(password):
         password=password.encode('utf8'),
         salt=config('salt').encode('utf8'),
         desired_key_bytes=32,
-        rounds=20)
+        rounds=30)
 
 def check(password,hashed):
     return bcrypt.checkpw(key(password), hashed)
