@@ -1,5 +1,4 @@
 from src.config.hash import check
-from src.config.auth import encode, decode
 from time import time
 from flask_restful import Resource,reqparse
 from src.models.user import UserModel
