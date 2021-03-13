@@ -2,8 +2,7 @@ from src.config.hash import check
 from time import time
 from flask_restful import Resource,reqparse
 from src.models.user import UserModel
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import create_access_token,jwt_required
 UserModel=UserModel()
 class User(Resource):
     parser=reqparse.RequestParser()
@@ -17,11 +16,11 @@ class User(Resource):
         if(not user):
             return "Not Found", 404
         elif(check(args['password'],user['password'])):
-            return create_access_token({"username":user['username'],"exp":int(time())+60*6}),200
+            return create_access_token(identity=user['username']),200
         else:
             return "Unauthorized",401
-    @jwt_required
-    def update(self):#altera senha
+    @jwt_required()
+    def put(self):#altera senha
         User.parser.add_argument('new_password',required=True)
         args=User.parser.parse_args()
         user=UserModel.find_one({'username':args['username']})
@@ -34,7 +33,18 @@ class User(Resource):
             return "Ok",200
         else:
             return "Unauthorized",401
+    @jwt_required()
+    def delete(self):
+        args=User.parser.parse_args()
+        user=UserModel.find_one({'username':args['username']})
 
+        if(not user):
+            return "Not Found", 404
+        elif(check(args['password'],user['password'])):
+            if(UserModel.delete(user.username)):
+                return "Deleted",200
+            else:
+                return "not Deleted",500
 class Register(Resource):
     parser=reqparse.RequestParser()
     parser.add_argument('username',required=True)

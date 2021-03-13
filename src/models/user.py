@@ -1,8 +1,8 @@
 from decouple import config
 from src.config.hash import hash
 from src.config.db import db
-from collections import OrderedDict
-from src.config.types import BinaryType, NumberType, StringType
+#from collections import OrderedDict
+#from src.config.types import BinaryType, NumberType, StringType
 import sys
 
 db.users  # Force create!

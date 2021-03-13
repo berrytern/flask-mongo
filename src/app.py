@@ -12,3 +12,4 @@ jwt=JWTManager(app)
 
 api.add_resource(User,'/login')
 api.add_resource(Register,'/register')
+api.add_resource(Csv,'/save/csv')
