@@ -22,8 +22,8 @@ class Csv(Resource):
         link, delimiter, name, skiprows= args['link'],args['delimiter'], args['name'],args['skiprows']
         get_domain(link)
         try:
-            df=pd.read_csv(filepath_or_buffer=link,delimiter=delimiter,skiprows=skiprows)
             if(not name in db.list_collection_names()):
+                df=pd.read_csv(filepath_or_buffer=link,delimiter=delimiter,skiprows=skiprows)
                 db.create_collection(name)
                 for index, row in df.iterrows():
                     document={}

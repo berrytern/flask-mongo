@@ -1,17 +1,17 @@
 from src.config.hash import check
-from time import time
 from flask_restful import Resource,reqparse
 from src.models.user import UserModel
-from flask_jwt_extended import create_access_token,jwt_required
+from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity
 UserModel=UserModel()
 class User(Resource):
     parser=reqparse.RequestParser()
-    parser.add_argument('username',required=True)
     parser.add_argument('password',required=True)
-        
+    parser.add_argument('username')
+    parser.add_argument('new_password')
+    
     def post(self):#login
         args=User.parser.parse_args()
-        user=UserModel.find_by_username(args['username'])
+        user=UserModel.find_one(args['username'])
 
         if(not user):
             return "Not Found", 404
@@ -19,24 +19,23 @@ class User(Resource):
             return create_access_token(identity=user['username']),200
         else:
             return "Unauthorized",401
+    
     @jwt_required()
     def put(self):#altera senha
-        User.parser.add_argument('new_password',required=True)
-        args=User.parser.parse_args()
-        user=UserModel.find_one({'username':args['username']})
-        
+        args=self.parser.parse_args()
+        user=UserModel.find_one(get_jwt_identity())
         if(not user):
             return "Not Found", 404
         elif(check(args['password'],user['password'])):
-            user['password']=args['new_password']
-            user.save()
+            UserModel.update(get_jwt_identity(),args['new_password'])
             return "Ok",200
         else:
             return "Unauthorized",401
+    
     @jwt_required()
     def delete(self):
         args=User.parser.parse_args()
-        user=UserModel.find_one({'username':args['username']})
+        user=UserModel.find_one(get_jwt_identity())
 
         if(not user):
             return "Not Found", 404
@@ -52,7 +51,7 @@ class Register(Resource):
 
     def post(self):
         args=User.parser.parse_args()
-        user=UserModel.find_by_username(args['username'])
+        user=UserModel.find_one(args['username'])
 
         if(not user):
             try:
